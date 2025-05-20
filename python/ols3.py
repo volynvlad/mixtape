@@ -16,11 +16,18 @@ for i in range(1000):
     tb = pd.DataFrame({
     'x': 9*np.random.normal(size=10000),
     'u': 36*np.random.normal(size=10000)})
-    tb['y'] = 3 + 2*tb['x'].values + tb['u'].values
+    tb['y'] = 3 + 2 * tb['x'].to_numpy() + tb['u'].to_numpy()
 
     reg_tb = sm.OLS.from_formula('y ~ x', data=tb).fit()
 
     coefs[i] = reg_tb.params['x']
 
-p.ggplot() +\
-  p.geom_histogram(p.aes(x=coefs), binwidth = 0.01)
+print(reg_tb.params)
+print(reg_tb.tvalues)
+print(reg_tb.t_test([1, 0]))
+print(reg_tb.f_test(np.identity(2)))
+print(f"coefs:\n{coefs.shape}")
+(
+    p.ggplot() +
+    p.geom_histogram(p.aes(x=coefs), binwidth = 0.01)
+).show()

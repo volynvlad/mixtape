@@ -12,15 +12,21 @@ def read_data(file):
 	return pd.read_stata("https://github.com/scunning1975/mixtape/raw/master/" + file)
 
 
-tb = pd.DataFrame({
-    'x': 9*np.random.normal(size=10),
-    'u': 36*np.random.normal(size=10)})
-tb['y'] = 3*tb['x'].values + 2*tb['u'].values
+tb = pd.DataFrame(
+	{
+	    'x': 9 * np.random.normal(size=10),
+	    'u': 36 * np.random.normal(size=10),
+	}
+)
+tb['y'] = 3 * tb['x'].to_numpy() + 2 * tb['u'].to_numpy()
 
 reg_tb = sm.OLS.from_formula('y ~ x', data=tb).fit()
 
 tb['yhat1'] = reg_tb.predict(tb)
 tb['uhat1'] = reg_tb.resid
 
-tb.describe()
+print("\tdata\n")
+print(tb)
+print("\tdescribe\n")
+print(tb.describe())
 
